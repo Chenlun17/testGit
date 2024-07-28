@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.UserAccountMapper">
+
+    <select id="findAll" resultType="com.example.pojo.UserAccount">
+        SELECT *
+        FROM UserAccount
+    </select>
+
+<!--    ALTER TABLE useraccount DROP FOREIGN KEY useraccount_ibfk_1删除外键关联;-->
+    <delete id="deleteById" >
+        DELETE
+        FROM useraccount
+        WHERE id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteUserInfoById">
+        DELETE
+        FROM userinfo
+        WHERE userinfo.id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="update">
+        UPDATE useraccount
+        <set>
+            <if test="account != null and account != ''">
+                account = #{account},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="id != null">
+                id = #{id},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="getById" resultType="com.example.pojo.UserAccount">
+        SELECT * FROM useraccount WHERE id = #{id}
+    </select>
+    <select id="getUserInfoById" resultType="com.example.pojo.UserInfo">
+        SELECT * FROM userinfo WHERE id = #{id}
+    </select>
+<!--    插入事务-->
+    <insert id="insertUserAccount">
+        INSERT INTO useraccount (account, password)
+        VALUES (#{account}, #{password})
+    </insert>
+    <insert id="insertUserInfo">
+        INSERT INTO userinfo (name, age, gender, idCard)
+        VALUES (#{name}, #{age}, #{gender}, #{idCard})
+    </insert>
+
+    <update id="updateUserAccountInfo">
+        UPDATE useraccount
+        SET account = #{account}, password = #{password}
+        WHERE id = #{id}
+    </update>
+    <update id="updateUserInfo">
+        UPDATE userinfo
+        SET name = #{name}, age = #{age}, gender = #{gender}, idCard = #{idCard}
+        WHERE id = #{id}
+    </update>
+
+</mapper>
