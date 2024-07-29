@@ -6,5 +6,10 @@ package com.example.Controller;
  * @Date: 2024/7/28 19:32
  */
 public class TestGitBruch {
+
     String Test;
+    public static void main(String[] args) {
+
+    }
+
 }
